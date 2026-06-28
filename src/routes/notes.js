@@ -16,8 +16,14 @@ router.get('/', auth, async (req, res) => {
 // POST /api/notes — create a note
 router.post('/', auth, async (req, res) => {
   try {
-    const { title, content, color } = req.body
-    const note = await Note.create({ title, content, color, user: req.user.id })
+    const { title, content, color, tags } = req.body
+    const note = await Note.create({ 
+      title, 
+      content, 
+      color, 
+      tags: tags || [], 
+      user: req.user.id 
+    })
     res.status(201).json(note)
   } catch (err) {
     res.status(500).json({ message: err.message })
@@ -29,7 +35,7 @@ router.put('/:id', auth, async (req, res) => {
   try {
     const note = await Note.findOneAndUpdate(
       { _id: req.params.id, user: req.user.id },
-      { title: req.body.title, content: req.body.content, color: req.body.color, pinned: req.body.pinned },
+      { title: req.body.title, content: req.body.content, tags: req.body.tags,color: req.body.color, pinned: req.body.pinned },
       { new: true }
     )
     if (!note) return res.status(404).json({ message: 'Note not found' })
