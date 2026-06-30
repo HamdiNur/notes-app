@@ -29,7 +29,7 @@ router.post('/', auth, async (req, res) => {
     res.status(500).json({ message: err.message })
   }
 })
-
+// 
 // PUT /api/notes/:id — update a note
 router.put('/:id', auth, async (req, res) => {
   try {
